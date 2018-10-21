@@ -61,6 +61,19 @@ console.log(obj2.c); // undefined
 
 In above snippet, the statement `var obj2 = Object.create(obj1)` will create `obj2` object with prototype  `obj1` object. In other words, `obj1` becomes the prototype of `obj2` instead of `Object.prototype` by default. As you can see,  `b` is not a property of `obj2`, you can still access it via the  prototype chain. For `c` property, however, you get `undefined` value because it can't be found in `obj1` and `Object.prototype`.
 
+#### Limitations of Prototypes
+While setting the prototypes of objects, ensure that the prototype chain does not form a cycle. 
+```
+let apple = {};
+let pear = {};
+let carrot = {};
+Object.setPrototypeOf(apple, pear)
+Object.setPrototypeOf(pear, carrot)
+Object.setPrototypeOf(carrot, apple) // ERROR!
+```
+This wil cause the javascript engine to throw an `Cyclic` error.
+The reasoning behind this is that the hierachy of the different objects becomes ambiguous, as the intepreter would not know which object comes before another.
+
 ### Classes
 
 In ES2016, we now get to use the `Class` keyword as well as the methods mentioned above to manipulate `prototype`. The JavaScript `Class` appeals to developers from OOP backgrounds, but it's essentially doing the same thing as above.
